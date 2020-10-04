@@ -1,0 +1,11 @@
+## First Week
+
+* Glance at our [Repository](https://github.com/BLM-FSMVU/305)
+* Read ["Neden JavaScript?"](https://eyler.blogspot.com/2018/06/neden-javascript.html)
+* Read Chap 1-3 in [Eloquent JavaScript](http://eloquentjavascript.net/)
+* Study the [First example](work/Counting.html)
+* See the [Course outline](../Course_outline)
+* Do the class work (on Thursday)
+
+**Attendance and regular class work is required** <br>
+_Derse devam ve düzenli ödev yapmak gerekiyor_
