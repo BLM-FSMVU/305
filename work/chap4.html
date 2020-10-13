@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="https://blm-fsmvu.github.io/305/images/icon192.png">
+    <script src="chap4.js"></script>
+    <title>Data Analysis</title>
+</head>
+
+<body>
+
+<h2 id=title></h2>
+
+<p>Minimum correlation =
+<input type=number id=inp value="0.0"
+  style="width:50px" onChange="report(analyze(value))">
+</p>
+<p id=out></p>
+
+<hr />
+<b>Sample code</b>
+<pre id=sample></pre>
+
+<hr />
+<p>Ref: <a href="http://eloquentjavascript.net/04_data.html#p_LI+01yIQON" 
+   target="ExternalDocument">Chap 4, Final analysis</a>
+</p>
+
+<script>
+function report(a) {
+  out.innerText = JOURNAL.length+" journal entries and "
+                + a.length+" events\n" + a.join("\n")
+}
+    title.innerText = document.title; 
+    report([...EVENTS])  //Set to Array
+    sample.innerText = analyze+"\n"+journalEvents;
+</script>
+
+</body>
+</html>
