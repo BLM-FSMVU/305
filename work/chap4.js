@@ -38,10 +38,11 @@ class Entry {
   constructor(evt, sq) {
     this.events = evt; this.squirrel = sq
   }
+  valueOf() { return this.events.length }
   toString() {
-    let s = this.events.length;
+    let s = this.valueOf()+" events"
     if (this.squirrel) s += " ✘";
-    return "[object Entry] " + s
+    return "Entry: "+s
   }
 }
 

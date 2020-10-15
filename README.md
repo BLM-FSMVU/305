@@ -8,7 +8,10 @@
 
 [Outline](Course_outline.html): weekly planning of the course
 
-Tools: [Chrome](https://wikiwand.com/en/Google_Chrome), [git](https://wikiwand.com/en/Git), [GitHub](https://github.com/), [GitKraken](https://gitkraken.com/)
+Tools: [Chrome](https://en.wikipedia.org/wiki/Google_Chrome), 
+[VS Code](https://code.visualstudio.com/), 
+[git](https://en.wikipedia.org/wiki/Git), 
+[GitHub](https://github.com/), [GitKraken](https://gitkraken.com/)
 
 
 **Attendance and regular class work is required** <br>
