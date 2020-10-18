@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="../images/icon192.png">
+    <title>Eloquent JavaScript </title>
+
+    <style>
+        body { max-width: 600px; }
+    </style>
+</head>
+
+<body>
+<p><b id=docName></b> &nbsp;
+<a href="https://maeyler.github.io/JS/sss/">Read me</a> &nbsp;
+<a href="https://maeyler.github.io/JS/sss/Turkish">Turkish</a>
+</p>
+<div id=sss></div>
+<p><input type=file multiple onChange='fileSelect(this)' /></p>  
+<pre id=disp1></pre> <img id=disp2 />
+
+<link  href="https://maeyler.github.io/JS/sss/inspector.css" rel="stylesheet">
+<script src="https://maeyler.github.io/JS/sss/inspector.js"></script>
+<script src="chap4.js"></script>
+<script src="chap6.js"></script>
+<script src="../exam/Quiz.js"></script>
+<script src="Async.js"></script>
+<script>
+"use strict";
+var a, b, c, ASYNC;  //global variables
+function init() {
+    let len = 123, name = "Circle", pi = Math.PI;
+    a = [0, 11, "22", "abc"];
+    c = {len, name, pi};
+    MENU = new Menu(); //global
+    MENU.s = "Small is beautiful";
+    MENU.d = new Date(),
+    MENU.a = a; MENU.c = c; //global
+    MENU.window = window;
+    display(MENU); 
+    display(new Chap4());
+    display(new Chap6());
+    display(new Quiz());
+    display(new Async());
+    display(MENU); 
+}
+    docName.innerText = "Inspector "+VERSION;
+    try {
+        inspect(sss, init); //makes the table
+        inp.value = "new Date()";
+    } catch(e) {
+        reportError(e);
+    }
+</script>
+</body>
+</html>
