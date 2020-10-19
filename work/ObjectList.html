@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
-    <link rel="icon" sizes="192x192" href="/JS/images/JS.png">
+    <link rel="icon" href="../images/icon192.png">
     <title>List of Objects </title>
 
   <style>
@@ -17,7 +17,9 @@
 <body>
 
 <h2 id=title></h2>
-<b>Text input</b>
+<b>Text input &emsp;
+<input type=button value=Convert onclick="toList()">
+</b>
 <p>
   <textarea id=inp rows=12 cols=50></textarea>
 </p>
@@ -34,7 +36,7 @@
 
 <script>
 "use strict";
-function toList(str) {
+function toList(str=inp.value) {
   function toObject(x) {
     let b = {}
     for (let [i,s] of x.split('\t').entries())
@@ -44,9 +46,12 @@ function toList(str) {
     let [d0, ...data] = str.split('\n')
     let keys = d0.split('\t')
     console.log("Keys:", keys)
-    return data.map(toObject)
+    let a = data.map(toObject)
+    out.innerText = JSON.stringify(a, '' ,2)
+    console.table(a)
+    return a
 }
-const TXT = 
+const PLANET = 
 `Name	Diam	Mass	Radius	Period
 Mercury	0.382	0.06	0.40	0.24
 Venus	0.949	0.82	0.72	0.62
@@ -55,14 +60,21 @@ Mars	0.532	0.11	1.52	1.88
 Jupiter	11.209	317.80	5.20	11.86
 Saturn	9.449	95.20	9.54	29.46
 Uranus	4.007	14.60	19.22	84.01
-Neptune	3.883	17.20	30.06	164.80`
+Neptune	3.883	17.20	30.06	164.80`,
+
+MOUNT = `mountain	height	place
+Kilimanjaro	5895	Tanzania
+Everest 	8848	Nepal
+Mount Fuji	3776	Japan
+Vaalserberg	323	Netherlands
+Denali  	6168	United States
+Popocatepetl	5465	Mexico
+Mont Blanc	4808	Italy/France`
 
     title.innerText = document.title
     sample.innerText = toList
-    inp.textContent = TXT
-    let a = toList(TXT)  //array of objects
-    out.innerText = JSON.stringify(a, '' ,2)
-    console.table(a)
+    inp.value = MOUNT
+    toList()  //array of objects
 </script>
 
 </body>
