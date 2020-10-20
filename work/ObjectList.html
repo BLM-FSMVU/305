@@ -18,10 +18,11 @@
 
 <h2 id=title></h2>
 <b>Text input &emsp;
-<input type=button value=Convert onclick="toList()">
+<input type=button id=convert value=Convert onclick="toList()">
 </b>
 <p>
-  <textarea id=inp rows=12 cols=50></textarea>
+  <textarea id=inp onchange="convert.disabled=false" rows=10 cols=50 >
+  </textarea>
 </p>
 <b>JSON output</b>
 <pre id=out></pre>
@@ -36,13 +37,16 @@
 
 <script>
 "use strict";
-function toList(str=inp.value) {
+function toList(str) {
   function toObject(x) {
     let b = {}
     for (let [i,s] of x.split('\t').entries())
       b[keys[i]] = (isNaN(s)? s : Number(s))
     return b
   }
+    if (str) inp.value = str
+    else str = inp.value
+    convert.disabled = true
     let [d0, ...data] = str.split('\n')
     let keys = d0.split('\t')
     console.log("Keys:", keys)
@@ -74,7 +78,7 @@ Mont Blanc	4808	Italy/France`
     title.innerText = document.title
     sample.innerText = toList
     inp.value = MOUNT
-    toList()  //array of objects
+    //toList()  //array of objects
 </script>
 
 </body>
