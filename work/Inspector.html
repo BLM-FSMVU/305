@@ -29,16 +29,33 @@
 <script src="Async.js"></script>
 <script>
 "use strict";
-var a, b, c, ASYNC;  //global variables
+class Chap4 extends Menu {
+  constructor() {
+    super();
+    this.JOURNAL = JOURNAL;
+    this.EVENTS = EVENTS;
+  }
+  correlation(evt) { 
+    return phi(window.tableFor(evt)) 
+  }
+  analyze(val) {
+    return window.analyze(val)
+  }
+  tableFor(evt) {
+    return window.tableFor(evt)
+  }
+}
+
+var a, b, c, d, s;  //global variables
 function init() {
-    let len = 123, name = "Circle", pi = Math.PI;
-    a = [0, 11, "22", "abc"];
-    c = {len, name, pi};
-    MENU = new Menu(); //global
-    MENU.s = "Small is beautiful";
-    MENU.d = new Date(),
-    MENU.a = a; MENU.c = c; //global
-    MENU.window = window;
+    let len = 123, name = "Circle", pi = Math.PI
+    a = [0, 11, "22", "abc"]
+    c = {len, name, pi}
+    d = new Date()
+    s = "Small is beautiful"
+    MENU = {a,c,d,s,window} //global
+    //make MENU a Menu instance
+    Object.setPrototypeOf(MENU, Menu.prototype)
     display(MENU); 
     display(new Chap4());
     display(new Chap6());
