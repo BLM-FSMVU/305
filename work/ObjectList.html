@@ -21,8 +21,7 @@
 <input type=button id=convert value=Convert onclick="toList()">
 </b>
 <p>
-  <textarea id=inp onchange="convert.disabled=false" rows=10 cols=50 >
-  </textarea>
+  <textarea id=inp rows=10 cols=50 ></textarea>
 </p>
 <b>JSON output</b>
 <pre id=out></pre>
@@ -46,7 +45,6 @@ function toList(str) {
   }
     if (str) inp.value = str
     else str = inp.value
-    convert.disabled = true
     let [d0, ...data] = str.split('\n')
     let keys = d0.split('\t')
     console.log("Keys:", keys)

@@ -35,7 +35,7 @@ class Quiz extends Menu {
     this.data = a.books.concat(a.books)
   }
   solution() {
-    let a = new Author("Rumi", 1273)
+    let a = new Author("Rumi", 1207)
     a.addBook(new Book("Mesnevi", 180))
     a.addBook(new Book("Divan", 350))
     return a
