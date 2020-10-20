@@ -8,7 +8,7 @@ a = [events, squirrel]
 c = {events, squirrel}
 e = new Entry(events, squirrel)
 ```
-[Diagram](../images/objects.png)
+![Diagram](../images/objects.png)
 
 ```
 a[0] == c.events  //true -- same object
