@@ -8,7 +8,8 @@
 
   <style> /* CSS comment */
     body { max-width: 440px; }
-    #inp { width: 50px }
+    #url { width: 190px; }
+    span, #url { color: blue; }
   </style>
 </head>
 
@@ -16,16 +17,16 @@
 
 <h2 id=title title="Modify xxx"></h2>
 <p title="navigator.platform">
-  Platform <span id=plat>??</span>
+  Platform: <span id=plat>??</span>
 </p>
 <p title="Battery level">
-  Battery level <span id=level>??</span>
+  Battery level: <span id=level>??</span>
 </p>
 <p title="Latitude/Longitude">
-  Location <span id=loc>??</span>
+  Location: <span id=loc>??</span>
 </p>
 <p title="URL exists?">
-  URL <input type=url id=url value="https://ipinfo.io/json"
+  URL <input type=url id=url value="https://maeyler.github.io/"
       onChange="check()"> <span id=resp>??</span>
 </p>
 <hr />
