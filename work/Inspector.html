@@ -47,20 +47,31 @@ class Chap4 extends Menu {
 }
 
 var a, b, c, d, s;  //global variables
+const L=console.log, T=800, D=display;
+const TEXT = 
+`const L=console.log, T=800, D=display;
+Callback:
+setTimeout(L, T, 'L is a callback', 'T='+T)
+navigator.geolocation.getCurrentPosition(L)
+Promise:
+navigator.getBattery().then(L)
+navigator.clipboard.readText().catch(L)
+fetch('https://ipinfo.io/json').then(L)`
 function init() {
     let len = 123, name = "Circle", pi = Math.PI
-    a = [0, 11, "22", "abc"]
+    a = [len, name, pi]
     c = {len, name, pi}
+    s = "len, name, pi"
     d = new Date()
-    s = "Small is beautiful"
-    MENU = {a,c,d,s,window} //global
-    //make MENU a Menu instance
-    Object.setPrototypeOf(MENU, Menu.prototype)
-    display(MENU); 
+    let m = {d, a, c, s, window}
+    //make m a Menu instance
+    Object.setPrototypeOf(m, Menu.prototype)
+    display(m); 
     display(new Chap4());
     display(new Chap6());
     display(new Quiz());
-    display(new Async());
+    MENU = new Async(); //global
+    MENU.displayText(TEXT)
     display(MENU); 
 }
     docName.innerText = "Inspector "+VERSION;
