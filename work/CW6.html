@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
-    <link rel="icon" href="https://blm-fsmvu.github.io/305/images/icon192.png">
-    <title>xxx </title>
+    <link rel="icon" href="/305/images/icon192.png">
+    <title>Asynchronous Programming </title>
 
   <style> /* CSS comment */
     body { max-width: 440px; }
@@ -39,10 +39,20 @@
 "use strict";
 // JavaScript comment
 function check() {
-//write your code here
+    fetch(url.value).then(r => 
+      resp.innerText = r.ok? 'OK' : 'Not found'
+    ).catch(e => resp.innerText = e)
 }
 function init() {
-//write your code here
+    plat.innerText = navigator.platform
+    navigator.geolocation.getCurrentPosition(p => 
+      loc.innerText = p.coords.latitude.toFixed(4)
+                +', '+p.coords.longitude.toFixed(4)
+    )
+    navigator.getBattery().then(b => 
+      level.innerText = 100*b.level+'%'
+    )
+    check()
 }
     title.innerText = document.title;
     sample.innerText = init+'\n'+check;
