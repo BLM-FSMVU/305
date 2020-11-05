@@ -42,7 +42,7 @@
 <input type=number onChange="showStudent(value)">
 </p>
 <p>Course id: 
-<input type=text onChange="studentsIn(value)" value="math 206 ">
+<input type=text onChange="showCourse(value)" value="math 206 ">
 </p>
 <p id=out onClick='doClick(event)'>Result:</p>
 
@@ -82,26 +82,22 @@ function report(msg, id, list) {
     msg += " "; let txt = "<br>\n"+msg;
     if (id) {
         msg += id; txt += "<span class=link>"+id
-        if (list) 
-            txt += "<span class=liste>"
-                +list.join("<br>")+"</span>"
+        if (list)  txt += "<span class=liste>"
+                    +list.join("<br>")+"</span>"
         txt += "</span>"
     }
     console.log(msg); out.innerHTML += txt; 
 }
-var stdMap, crsMap; //global Map instances
-function makeData(txt, maker) {
-    let map = new Map()
+const stdMap = new Map(), crsMap = new Map(); //global
+function makeData(txt, Maker, map) {
+    map.clear()
     for (let line of txt.split('\n')) {
         if (!line) continue
-        let std = maker(line)
+        let std = Maker.fromString(line)
         map.set(std.id, std)
     }
     report(map.size+" items");
     return map;
-}
-function makeMap(txt) {
-    //implement this
 }
 function doClick(evt) {
     let s = evt.target.innerText;
@@ -115,7 +111,7 @@ function showStudent(id) {
     report(t, "("+std.list.length+" courses)", std.list);
     return std
 }
-function studentsIn(id) {
+function showCourse(id) {
     id = id.toUpperCase();
     let a = [];
     for (let std of stdMap.values()) 
@@ -134,13 +130,13 @@ function randomStd() {
     report("Random: ", b.id);
     return b
 }
-function findBest() { //find the best gpa in stdMap
+function findBest() { //the best gpa in stdMap
     report("Implement this");
 }
 const LINK = "https://maeyler.github.io/JS/data/"
 function readStudents() {
     fetch(LINK+"Students.txt").then(r => r.text())
-    .then(t => stdMap = makeData(t, Student.fromString))
+    .then(t => makeData(t, Student, stdMap))
 }
 function readCourses() {
     fetch(LINK+"Courses.txt").then(r => r.text())
