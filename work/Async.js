@@ -27,6 +27,9 @@ class Async extends Menu {
     this.geolocation = navigator.geolocation;
     this.reader = RDR2  //defined above
   }
+  // registerEvent(elt, typ) { //for Event listening
+  //   elt['on'+typ] = display
+  // }
   isTextFile(f) {
     console.assert(f instanceof File);
     return f.type.startsWith("text") || f.name.endsWith(".md")
