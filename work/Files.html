@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="../images/icon192.png">
+    <title>Remote and Local Files </title>
+    <style>
+        body { max-width: 500px; }
+        #remote { width: 90%; }
+    </style>
+</head>
+
+<body>
+<p><b id=docName></b> &nbsp; <a href="Reading_files">Reference</a>
+</p>
+<p>Remote file <br>
+  <input type=text id=remote size=35 value="../images/objects.png">
+</p>
+<p><input type=file id=local multiple onChange='fileSelect()' /></p>  
+<pre id=out></pre>
+<hr />
+<b>Sample code</b>
+<pre id=sample></pre>
+
+<script>
+"use strict";
+function fileSelect() {
+    fetch(remote.value).then(r => r.blob())
+    .then(checkFiles) //called with Blob b
+}
+function checkFiles(b) {
+    let a = [...local.files]
+    //Implement this
+    out.innerText += 'Implement this '
+}
+const L = console.log
+docName.innerText = document.title
+sample.innerText = fileSelect+"\n"+checkFiles
+</script>
+</body>
+</html>
