@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width">
     <link rel="icon" href="../images/icon192.png">
     <title>Remote and Local Files </title>
+
     <style>
-        body { max-width: 500px; }
-        #remote { width: 90%; }
+        body { max-width: 440px; }
     </style>
 </head>
 
@@ -15,7 +15,8 @@
 <p><b id=docName></b> &nbsp; <a href="Reading_files">Reference</a>
 </p>
 <p>Remote file <br>
-  <input type=text id=remote size=35 value="../images/objects.png">
+  <input type=text id=remote size=40
+  value="https://blm-fsmvu.github.io/305/images/objects.png">
 </p>
 <p><input type=file id=local multiple onChange='fileSelect()' /></p>  
 <pre id=out></pre>
@@ -30,10 +31,18 @@ function fileSelect() {
     .then(checkFiles) //called with Blob b
 }
 function checkFiles(b) {
-    let a = [...local.files]
-    //Implement this
-    out.innerText += 'Implement this '
+    let toStr = f => f.name+' '+f.type
+    let equals = f =>
+        f.size==b.size && f.type==b.type
+    let a = [...local.files]  //to Array
+    out.innerText = a.map(toStr).join('\n')
+        +'\n\n'+ a.length+' items checked, '
+    let [found] = a.filter(equals)
+    out.innerText += found ?
+            found.name+' is the same'
+          : 'all files are different'
 }
+
 const L = console.log
 docName.innerText = document.title
 sample.innerText = fileSelect+"\n"+checkFiles
