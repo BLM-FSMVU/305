@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<link rel="icon" href="../images/icon192.png">
+
+<script>
+"use strict";
+function elt(type, ...list) {
+  let e = document.createElement(type)
+  for (let c of list) {
+    if (typeof c === "string") 
+       c = document.createTextNode(c);
+    e.appendChild(c)
+  }
+  return e;
+}
+const BOOK_REF = 
+  "http://eloquentjavascript.net/14_dom.html#h_AlX6HES+2D",
+  TITLE = "Page made by JavaScript",
+  TEXT = "No book can ever be finished. While "
+    +"working just enough to find it immature "
+    +"the moment we turn away from it.",
+  AUTH = "Karl Popper", YEAR = ", 1950",
+  DESC = ", preface to the second editon of ",
+  BOOK = "The Open Society and Its Enemies";
+function makePage() {
+  let para = elt("p", "— ",
+        elt("b", AUTH), DESC,
+        elt("i", BOOK), YEAR
+      )
+//<p>— <b>AUTH</b>DESC<i>BOOK</i>YEAR</p>
+  let span = elt("span", TEXT)
+  span.style.color = "blue"
+  let bold = elt("b", "Sample code")
+  let pre  = elt("pre", makePage+'')
+  let link = elt("a", "Creating nodes")
+  link.href = BOOK_REF
+  document.title = TITLE
+  document.body = elt("body", 
+      elt("h2", TITLE), 
+      elt("hr"), 
+      elt("blockquote", span, para), 
+      elt("hr"), 
+      elt("div", bold, pre), 
+      elt("hr"), 
+      elt("div", "Ref: ", link)
+    )
+  document.body.style.maxWidth = "480px"
+}
+makePage()
+</script>
+<!-- The document body is made by the script above -->

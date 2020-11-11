@@ -1,5 +1,7 @@
 ### Class work
 
+* [CW#9 -- Page made by JS](Page_by_JS.html)
+* [CW#8 -- File operations](Files.html)
 * [CW#7 -- Student database](Students.html)
 * [CW#6 -- Callback and Promise](CW6.html)
 * [CW#5 -- Classes and Maps](Inspector.html)
