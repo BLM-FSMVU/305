@@ -15,8 +15,8 @@ function elt(type, ...list) {
 const BOOK_REF = 
   "http://eloquentjavascript.net/14_dom.html#h_AlX6HES+2D",
   TITLE = "Page made by JavaScript",
-  TEXT = "No book can ever be finished. While "
-    +"working just enough to find it immature "
+  TEXT = "No book can ever be finished. While working "
+    +"on it we learn just enough to find it immature "
     +"the moment we turn away from it.",
   AUTH = "Karl Popper", YEAR = ", 1950",
   DESC = ", preface to the second editon of ",
@@ -43,7 +43,7 @@ function makePage() {
       elt("div", "Ref: ", link),
       elt("hr")
     )
-  document.body.style.maxWidth = "480px"
+  document.body.style.maxWidth = "420px"
 }
 const tree = [], SPACE = '&emsp;', MAX = 26;
 function toTree(e, space) {
@@ -56,9 +56,9 @@ function toTree(e, space) {
   for (let c of e.children)
       toTree(c, space+SPACE)
 }
-makePage()
-tree.length = 0; toTree(document.body, '')
-let t = elt("p"); document.body.append(t)
-t.innerHTML = tree.join('<br>')
+makePage(); toTree(document.body, '');
+let t = elt("p"); t.style.color = "green";
+t.innerHTML = tree.join('<br>');
+document.body.append(t);
 </script>
 <!-- The document body is made by the script above -->
