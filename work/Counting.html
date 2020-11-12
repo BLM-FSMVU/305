@@ -8,13 +8,21 @@
 
   <style>
     body { max-width: 440px; }
+    #inp { width: 50px }
+    #out {
+        font-size: 18px;
+        background: blue;
+        color: white;
+        text-align: center;
+        padding: 10px;
+    }
   </style>
 </head>
 
 <body>
-<h2 id=tit></h2>
+<h2 id=tab></h2>
 Initial 
-<input type=number value=0 onChange="out.innerText=value">
+<input id=inp type=number value=0 onChange="out.innerText=value">
 &emsp;
 <input type=button value='+' onClick="increment()">
 <p id=out></p>
@@ -28,7 +36,7 @@ Initial
 function increment() {
     out.innerText = Number(out.innerText)+1
 }
-tit.innerText = document.title;
+tab.innerText = document.title;
 out.innerText = 0; increment();
 </script>
 </body>

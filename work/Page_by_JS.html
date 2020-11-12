@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <link rel="icon" href="../images/icon192.png">
@@ -8,11 +7,10 @@
 function elt(type, ...list) {
   let e = document.createElement(type)
   for (let c of list) {
-    if (typeof c === "string") 
-       c = document.createTextNode(c);
-    e.appendChild(c)
+    e.appendChild(c instanceof Element? c
+             : document.createTextNode(c))
   }
-  return e;
+  return e
 }
 const BOOK_REF = 
   "http://eloquentjavascript.net/14_dom.html#h_AlX6HES+2D",
@@ -24,15 +22,15 @@ const BOOK_REF =
   DESC = ", preface to the second editon of ",
   BOOK = "The Open Society and Its Enemies";
 function makePage() {
+//<p>— <b>AUTH</b>DESC<i>BOOK</i>YEAR</p>
   let para = elt("p", "— ",
         elt("b", AUTH), DESC,
         elt("i", BOOK), YEAR
       )
-//<p>— <b>AUTH</b>DESC<i>BOOK</i>YEAR</p>
   let span = elt("span", TEXT)
   span.style.color = "blue"
   let bold = elt("b", "Sample code")
-  let pre  = elt("pre", makePage+'')
+  let pre  = elt("pre", makePage)
   let link = elt("a", "Creating nodes")
   link.href = BOOK_REF
   document.title = TITLE
@@ -42,11 +40,25 @@ function makePage() {
       elt("blockquote", span, para), 
       elt("hr"), 
       elt("div", bold, pre), 
-      elt("hr"), 
-      elt("div", "Ref: ", link)
+      elt("div", "Ref: ", link),
+      elt("hr")
     )
   document.body.style.maxWidth = "480px"
 }
+const tree = [], SPACE = '&emsp;', MAX = 26;
+function toTree(e, space) {
+  let c = e.firstChild
+  if (!c || c instanceof Element) c = ''
+  else c = SPACE+c.textContent
+  if (c.length>MAX+3) c = c.substring(0, MAX)+'…'
+  console.log(space.length, e.localName, c)
+  tree.push(space+'+ '+e.tagName+c)
+  for (let c of e.children)
+      toTree(c, space+SPACE)
+}
 makePage()
+tree.length = 0; toTree(document.body, '')
+let t = elt("p"); document.body.append(t)
+t.innerHTML = tree.join('<br>')
 </script>
 <!-- The document body is made by the script above -->
