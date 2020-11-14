@@ -67,15 +67,19 @@ class Student {
         return new Student(...s.split('\t'))
     }
 }
-class Course { //implement this
-    constructor( ) {
-    }
-    toString() {
-        return ''
-    }
-    static fromString(s) {
-        return null
-    }
+class Course {
+  constructor(id, time, date, ...rooms) {
+    this.id = id
+    this.time = time
+    this.date = date
+    this.rooms = rooms
+  }
+  toString() {
+    return this.id+' '+this.date+' '+this.time
+  }
+  static fromString(s) {
+    return new Course(...s.split('\t'))
+  }
 }
 
 function report(msg, id, list) {
@@ -113,6 +117,10 @@ function showStudent(id) {
 }
 function showCourse(id) {
     id = id.toUpperCase();
+    let crs = crsMap.get(id);
+    if (!crs) return report(id+" not found");
+    let t = crs.toString()
+    report(t, crs.rooms.length+" rooms", crs.rooms);
     let a = [];
     for (let std of stdMap.values()) 
         if (std.list.includes(id)) 
@@ -131,7 +139,9 @@ function randomStd() {
     return b
 }
 function findBest() { //the best gpa in stdMap
-    report("Implement this");
+    let a = [...stdMap.values()] //Array
+    let [b] = a.sort((x,y) => y.gpa-x.gpa)
+    report("Best ", b.id);
 }
 const LINK = "https://maeyler.github.io/JS/data/"
 function readStudents() {
@@ -140,7 +150,7 @@ function readStudents() {
 }
 function readCourses() {
     fetch(LINK+"Courses.txt").then(r => r.text())
-    //.then( Implement this )
+    .then(t => makeData(t, Course, crsMap))
 }
 title.innerText = document.title
 sample.innerText = Course+"\n"+readCourses+"\n"+findBest
