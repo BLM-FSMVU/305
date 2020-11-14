@@ -56,9 +56,12 @@ function toTree(e, space) {
   for (let c of e.children)
       toTree(c, space+SPACE)
 }
-makePage(); toTree(document.body, '');
-let t = elt("p"); t.style.color = "green";
-t.innerHTML = tree.join('<br>');
-document.body.append(t);
+function init() {
+  makePage(); toTree(document.body, '');
+  let t = elt("p"); t.style.color = "green";
+  t.innerHTML = tree.join('<br>');
+  document.body.append(t);
+}
+onload = init
 </script>
 <!-- The document body is made by the script above -->

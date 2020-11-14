@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="../images/icon192.png">
+    <title>SubtleCrypto </title>
+
+    <style>
+      #div1, #div2 {
+        vertical-align: text-top;
+        display: inline-block;
+      }
+      #div1 {
+        width: 400px;
+        margin-right: 20px;
+      }
+      #div2 {
+        width: 340px;
+      }
+    </style>
+</head>
+
+<body>
+<div id=div1>
+  <p><b id=docName></b> &nbsp; <a
+    href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest"
+    target=NewTab>Reference</a>
+  </p>
+  <p><input type=file multiple onChange='fileSelect(this)' />
+  </p>  
+  <div id=sss></div>
+</div>
+
+<div id=div2>
+  <p>
+    <b>Sample code</b>
+    <pre id=sample></pre>
+  </p>
+  <hr>
+  <p>
+    <a href="https://en.wikipedia.org/wiki/SHA-1" target=NewTab>SHA-1</a>
+    kripto yöntemi, verilen bir datayı 20 byte'lık hash koduna
+    çevirir. Uzun ya da kısa, düz metin ya da binary hiç fark etmez,
+    algoritma her zaman 20 byte (40 karakter hex) üretir.
+  </p>
+  <p>
+    JavaScript içinde bu işlemi yapan SubtleCrypto.digest() metodu: Input 
+    data ArrayBuffer içinde verilir ve (uzun sürmesi muhtemel olduğu için)
+    yine ArrayBuffer içeren bir Promise alınır. 
+    Basit bir kelimeyi kodlamak bile karmaşık bir dizi komut gerektirir:
+    <pre id=text></pre>
+    Bu satırları Console'da deneyince sonuç şöyle:<br>
+    <code>ff649c648d066c6e9e50c14a4711200f40702801</code>
+  </p>
+  <p>
+    Kriptografi anlamında 'SHA-1' güvenli (secure) sayılmıyor.
+    Sadece dosyaların "Yanlışlıkla değişmediğini" gösteren bir sağlama 
+    yöntemi olarak Git ve benzeri sistemlerde kullanılıyor.
+  </p>
+  <p>
+    Algoritmayı OS içinden kullanmak da mümkün. Unix bazlı sistemlerde 
+    <code>shasum</code> (ya da 
+    <a href="https://shapeshed.com/unix-sha1sum/" target=NewTab>sha1sum</a>)
+    standard yüklü, Windows'da ise
+<a href="https://www.microsoft.com/en-us/download/confirmation.aspx?id=11533"
+target=NewTab>fciv.exe</a> gibi bir yazılım indirmek gerekir.
+  </p>
+  <hr>
+</div>
+<link  href="https://maeyler.github.io/JS/sss/inspector.css" rel="stylesheet">
+<script src="https://maeyler.github.io/JS/sss/inspector.js"></script>
+<script>
+"use strict";
+class Crypto extends Menu {
+  constructor() {
+    super();
+    this.crypto = crypto.subtle
+    this.algorithm = 'SHA-1'
+    this.M = M
+  }
+  shaFromBuffer(buf) { //ArrayBuffer or ArrayBufferView
+    crypto.subtle.digest(MENU.algorithm, buf)
+    .then(b => display(MENU.bufferToHex(b)))
+  } 
+  shaFromFile(f) { //File or Blob
+    return "implement this"
+  }
+  shaFromURL(u) { //URL or string
+    fetch(u).then(resp => resp.arrayBuffer())
+    .then(MENU.shaFromBuffer)
+  }
+  shaFromString(txt) {
+    if (txt.startsWith('https://')) {
+      let u = new URL(txt); display(u)
+      MENU.shaFromURL(u)
+    } else {
+      let b = MENU.bufferFromString(txt)
+      MENU.shaFromBuffer(b)
+    }
+  }
+  //https://gist.github.com/skratchdot/e095036fad80597f1c1a
+  bufferFromString(txt) {
+    return new TextEncoder().encode(txt);
+  }
+  bufferToString(buf) {
+    return new TextDecoder().decode(buf);
+  }
+  bufferToHex(buf) {
+    return [...new Uint8Array(buf)].map(toHex).join('')
+  }
+}
+var a, b, c, d;  //global variables
+const L = console.log, D = display,
+    M = "küçük şeyler güzeldir",
+    toHex = b=>b.toString(16).padStart(2,'0'),
+    TEXT = 'M = "'+M+'"\ntoHex = '+toHex +`
+//encode string M into h using SHA-1
+crypto.subtle.digest('SHA-1', 
+       new TextEncoder().encode(M))
+.then(x => h=[...new Uint8Array(x)]
+              .map(toHex).join(''))`
+
+function fileSelect(t) { //from Async.js
+    let a = t.files;
+    if (a.length == 0) return;
+    display(a.length==1? a[0] : a)
+}
+function init() {
+    MENU = new Crypto() //global
+    display(MENU) 
+    sample.innerText = '  '+MENU.shaFromFile
+}
+  text.innerText = TEXT
+  docName.innerText = document.title
+  try {
+    inspect(sss, init); //makes the table
+    inp.value = "new Uint8Array(_)";
+  } catch(e) {
+    reportError(e);
+  }
+</script>
+</body>
+</html>

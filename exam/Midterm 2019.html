@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="../images/icon192.png">
+    <title>Midterm Exam </title>
+</head>
+
+<body>
+
+<h2 id=title></h2>
+
+<div><h3>Q1</h3>
+<pre>
+let b1 = [21,13,13,21]
+let s1 = new Set()
+for (let x of b1) s1.add(x)
+b1.length == 4,  s1.size == 2
+Repetitions are removed
+</pre></div>
+
+<div><h3>Q2</h3>
+URL <input type=text id=url value="solution.txt">
+<input type=button value="Q2" onClick="read(url.value)">
+<pre id=out2>
+let k = t.split('\n').length
+
+</pre>
+</div>
+
+<div><h3>Q3</h3>
+<pre id=out3></pre>
+<img src="Q3.jpg" width="400px">
+</div>
+
+<div><h3>Q4</h3>
+<pre id=out4>
+nw  Point (object)
+se.x  number
+se.toString  function
+se.y.toString()  string
+</pre></div>
+
+<div><h3>Q5</h3>
+<pre id=out5>
+p2 is Object
+p is Point, toString() redefined
+</pre></div>
+
+<div><h3>Q6</h3>
+<pre id=out6></pre>
+</div>
+
+<script>
+"use strict";
+title.innerText = document.title
+
+//Q1
+let b1 = [21,13,13,21]
+let s1 = new Set()
+for (let x of b1) s1.add(x)
+console.log("b1:", b1, "s1:", s1)
+
+//Q2
+function report(x) {
+    out2.innerText += x+'\n'
+    console.log(x)
+}
+function result(t) {
+    report(t.length+" chars")
+    //find number of lines in String t
+    let k = t.split('\n').length
+    report(k+" lines")
+}
+function response(r) {
+    report("response")
+    return r.text()
+}
+function read(f) {
+    fetch(f).then(response).then(result)
+    report("start")
+}
+
+//Q3
+class Point {
+  //Cartesian coordinates x, y
+  constructor(x, y) {
+    this.x = x
+    this.y = y
+  }
+  toString() {
+    return "("+this.x+","+ this.y+")"
+  }
+}
+class Rectangle {
+  //north-west and south-east corners  
+  constructor(n, s) {
+    this.nw = n
+    this.se = s
+  }
+  toString() {
+    return this.nw+":"+ this.se
+  }
+}
+let p = new Point(13, 4)
+let q = new Point(25, 8)
+let r = new Rectangle(p, q)
+let s = JSON.stringify(r).replace(/"/g, '')
+out3.innerText = Point+'\n'+Rectangle
+    +'\ntoString(): \n'+r
+    +'\nconsole.log(): \n'+s
+console.log("r:", r)
+
+//Q4
+let data = [r]
+data.push(new Rectangle(p, p))
+data.push(new Rectangle(q, p))
+data.push(new Rectangle(q, q))
+function noRep() {
+    let n = []
+    for (let d of data) {
+      if (!n.includes(d.nw)) n.push(d.nw)
+      if (!n.includes(d.se)) n.push(d.se)
+    }
+    return n.length+' Points: '+n
+}
+out4.innerText += '\n'+noRep+'\n'+noRep()
+
+//Q5
+let p2 = {x:13, y:4}
+console.log("p:", p, "p2:", p2)
+function toMap(a) {
+    let m = new Map()
+    for (let k of a) {
+      let c = m.get(k)
+      if (!c) c = 0;
+      m.set(k, c+1)
+    }
+    return m
+}
+let a = [305, "FSM", p, 305, "BLM", p, p, "BLM", "FSM", "BLM"]
+console.log("a:", a)
+let m = toMap(a) //this is the expected answer
+console.log("m:", m)
+//to print m, we need another Array
+let b = []
+for (let k of m.keys()) 
+    b.push(k+' => '+m.get(k))
+out5.innerText += '\n'+toMap+'\n['+a+']\n'+b.join(', ')
+
+//Q6
+function union(a, b) {
+    let c = new Set()
+    for (let x of a) c.add(x)
+    for (let x of b) c.add(x)
+    return c
+}
+out6.innerText = union
+
+</script>
+
+</body>
+</html>
