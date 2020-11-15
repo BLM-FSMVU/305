@@ -61,14 +61,14 @@ subtle.digest('SHA-1', new TextEncoder().encode(M))
     Kriptografi anlamında 'SHA-1' güvenli (secure) sayılmıyor.
     Sadece dosyaların "Yanlışlıkla değişmediğini" gösteren bir sağlama 
     yöntemi olarak Git ve benzeri sistemlerde kullanılıyor.
+    Kullanıcı şifrelerini kaydetmek için de iyi bir yöntem.
   </p>
   <p>
-    Algoritmayı OS içinden kullanmak da mümkün. Unix bazlı sistemlerde 
-    <code>shasum</code> (ya da 
-    <a href="https://shapeshed.com/unix-sha1sum/" target=NewTab>sha1sum</a>)
-    standard yüklü, Windows'da ise
+    Algoritmayı OS içinden de kullanmak mümkün. Sistemde
+    <a href="https://shapeshed.com/unix-sha1sum/" target=NewTab>sha1sum</a>
+    komutu standard yüklü olmalı, değilse
 <a href="https://www.microsoft.com/en-us/download/confirmation.aspx?id=11533"
-target=NewTab>fciv.exe</a> gibi bir yazılım indirmek gerekir.
+    target=NewTab>fciv.exe</a> gibi bir yazılım indirmek gerekebilir.
   </p>
   <hr>
 </div>
@@ -122,7 +122,7 @@ const L = console.log, D = display,
     subtle = crypto.subtle,
     TEXT = 'const M = "'+M+'",\ntoHex = '+toHex
 
-function fileSelect(t) { //from Async.js
+function fileSelect(t) { //simplified from Async.js
     let a = t.files;
     if (a.length == 0) return;
     display(a.length==1? a[0] : a)
