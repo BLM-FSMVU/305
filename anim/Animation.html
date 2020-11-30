@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width">
+      <meta name="author" content="M A Eyler, Istanbul, 2020">
+      <link rel="icon" href="../images/icon192.png">
+      <title>Animation collection </title>
+      <style>
+        body { margin: 0; max-width: 600px; }
+        select { padding: 3px; }
+        p { margin: 8px; }
+        #run {
+            font-family: monospace;
+            width: 30px;
+        }
+        #main {
+            width: 100%; height: 90vh;
+            background: lightcyan;
+        }
+      </style>
+  </head>
+  
+  <body>
+      <select id=menu title="Animation options"></select>&emsp;
+      <button id=run title="Run/Stop"></button>&emsp;
+      <span id=out></span>
+      <div id=main></div>
+
+<script>
+"use strict";
+const NAMES = [''] //array of Animator class names
+var js,      //script element -- loads Animator
+    current; //Animator element and other data
+
+function random(min, max) {
+   return min + Math.random() * (max-min)
+}
+function randInt(min, max) { //end points included
+   return min + Math.floor(Math.random() * (max-min+1))
+}
+function randomColor() { //exclude too dark colors
+   let h=randInt(0,359), s=randInt(30,100), l=randInt(50,70)
+   return 'hsl('+h+','+s+'%,'+l+'%)'
+}
+
+class Animator { //extend this class
+    constructor() {
+        // this.author = 'who made this code?'
+        // this.desc = 'what does it do?'
+        // this.anim = { Animation object }
+        // this.elt = document.createElement('xxx')
+        // this.elt.style = 'CSS code'
+        // this.time = duration in miliseconds
+    }
+    update() { /* calculate state */ }
+}
+
+function animate() {
+    current.update()
+    let e = current.elt
+    current.aa = e.animate(current.anim, current.time)
+    current.id = setTimeout(animate, current.time)
+    run.innerText = '||'
+}
+function pause() {
+    if (!current || !current.id) return
+    current.aa.cancel(); clearTimeout(current.id);
+    current.id = undefined; run.innerText = '▶'
+}
+function start(name) {
+    let c = eval('new '+name)
+    if (current) main.removeChild(current.elt)
+    pause(); current = c
+    main.appendChild(c.elt)
+    out.innerText = c.author
+    out.title = c.desc
+    current.name = c.constructor.name
+    console.log('start', c)
+    animate()
+}
+function doRun(evt) { //run.onclick
+    if (current.id) pause(); else animate()
+}
+function doKey(evt) { //document.onkeydown
+    switch (evt.key) {
+        case 'R': case 'r': 
+            doRun(); break;
+        case 'Escape': 
+            pause(); break;
+        case 'Enter': 
+            animate(); break;
+        default:
+    }
+}
+function loadJS(name) { //on error
+    if (js) document.body.removeChild(js)
+    js = document.createElement("script")
+    document.body.appendChild(js)
+    js.src = name+".js"
+    js.onload = () => start(name)
+}
+function doSelect() { //menu.onchange
+    let name = NAMES[menu.selectedIndex]
+    try {
+        start(name)
+    } catch (err) {
+        loadJS(name)
+    }
+}
+async function makeMenu() {
+    let [u, g] = location.host.split('.')
+    if (g != 'github') u = prompt('GitHub user name')
+    let url = 'https://api.github.com/repos/'
+         + u +'/305/contents/anim'
+    let resp = await fetch(url)
+    if (!resp.ok) throw resp.statusText
+    let a = await resp.json()
+    for (let x of a) if (x.name.endsWith('.js')) {
+        let n = x.name.length   //remove '.js'
+        NAMES.push(x.name.substring(0, n-3))
+    }
+    menu.innerHTML = '<option disabled selected>Options:'
+        + NAMES.join('<option>')
+}
+makeMenu()  //takes time
+run.onclick = doRun
+document.onkeydown = doKey
+menu.onchange = doSelect
+</script>
+  </body>
+</html>
