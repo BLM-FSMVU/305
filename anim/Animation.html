@@ -10,10 +10,7 @@
         body { margin: 0; max-width: 600px; }
         select { padding: 3px; }
         p { margin: 8px; }
-        #run {
-            font-family: monospace;
-            width: 30px;
-        }
+        #run { width: 30px; }
         #main {
             width: 100%; height: 90vh;
             background: lightcyan;
@@ -75,7 +72,6 @@ function start(name) {
     main.appendChild(c.elt)
     out.innerText = c.author
     out.title = c.desc
-    current.name = c.constructor.name
     console.log('start', c)
     animate()
 }

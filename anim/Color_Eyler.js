@@ -2,7 +2,7 @@ class Color_Eyler extends Animator  {
     constructor() {
         super();
         this.author = 'M A Eyler'
-        this.description = 'Smooth color change'
+        this.desc = 'Smooth color change'
         let b = ["lightcyan", "magenta", "yellow", "lightcyan"]
         this.anim = { background: b }
         this.elt = document.createElement('div')

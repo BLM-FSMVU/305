@@ -2,7 +2,7 @@ class Clock_Small extends Animator  {
     constructor() {
         super();
         this.author = 'Small Simple'
-        this.description = 'Simple digital clock'
+        this.desc = 'Simple digital clock'
         let x0 = "translate(0)", x1 = "translate(300px)"
         this.anim = { transform: [x0, x1, x0] }
         this.elt = document.createElement('p')
