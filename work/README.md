@@ -1,5 +1,9 @@
+
+[Repository](https://github.com/BLM-FSMVU/305/)
+
 ### Class work
 
+* [CW#11 -- Animation](https://maeyler.github.io/JS/simple/JS_Animation.html)
 * [CW#10 -- ArrayBuffer & Crypto](Crypto.html)
 * [CW#9 -- Page made by JS](Page_by_JS.html)
 * [CW#8 -- File operations](Files.html)
@@ -21,8 +25,9 @@
 
 ### Homework
 
+* [HW#3 -- Git and Animation](../anim/Animation.html)
 * [HW#2 -- Database and timing](Students.html)
-* HW#1 -- Poisson Table
+* [HW#1 -- Poisson Table](https://maeyler.github.io/opt/work/Poisson)
 
 
 ### Useful links
