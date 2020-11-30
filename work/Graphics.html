@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="../images/icon192.png">
+    <title>SVG and Canvas </title>
+
+  <style>
+    body { max-width: 500px; }
+    pre { overflow-x: auto; }
+    svg, canvas {
+        background: cyan;
+        font: 10px arial, sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Using SVG</h2>
+<svg id=svg width=340 height=100>
+  <circle cx=50 cy=50 r=40
+    style="fill:yellow;stroke:blue;stroke-width:4" />
+  <text x=35 y=55 fill=black>Circle</text>
+  <rect x=110 y=10 width=100 height=80
+    style="fill:pink;stroke:red;stroke-width:5" />
+  <text x=145 y=55 fill=blue>Rect</text>
+</svg>
+<p>SVG elements are controllable and scalable</p>
+<pre id=out></pre>
+
+<hr />
+
+<h2>Using Canvas</h2>
+<canvas id=canvas width=340 height=100></canvas>
+<p>Canvas is an image drawn by JavaScript</p>
+<pre id=sample></pre>
+
+<hr />
+
+<p>Ref: <br>
+<i>Eloquent JavaScript</i>,
+<a href="http://eloquentjavascript.net/17_canvas.html" 
+   target="NewTab">Chap 17</a><br>
+<a href="https://lab.hakim.se/zoom-js/" 
+   target="NewTab">Zoom</a> &emsp;
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition" 
+   target="NewTab">Transition</a><br>
+</p>
+
+<script src="https://lab.hakim.se/zoom-js/js/zoom.js"></script>
+<script>
+"use strict";
+function draw() { //on canvas
+    const cx = canvas.getContext("2d");
+    cx.beginPath(); cx.lineWidth = 4;
+    cx.fillStyle = "yellow"; cx.strokeStyle = "blue";
+    cx.arc(50, 50, 40, 0, 2*Math.PI);
+    cx.fill(); cx.stroke();
+    cx.fillStyle = "black"; 
+    cx.fillText("arc",44,55);
+
+    cx.beginPath(); cx.lineWidth = 5;
+    cx.fillStyle = "pink"; cx.strokeStyle = "red";
+    cx.rect(110, 10, 100, 80);
+    cx.fill(); cx.stroke();
+    cx.fillStyle = "blue"; 
+    cx.fillText("rect",148,55);
+}
+function doZoom(event) {
+	event.preventDefault();
+	zoom.to({ element: event.target, pan: false });
+}
+
+    sample.innerText = draw
+    out.innerText = svg.outerHTML
+    draw()
+    document.body.style.transition = "all 2s ease"
+	document.body.onclick = doZoom
+</script>
+
+</body>
+</html>
