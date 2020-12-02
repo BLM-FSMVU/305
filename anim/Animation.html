@@ -55,9 +55,9 @@ class Animator { //extend this class
 
 function animate() {
     current.update()
-    let e = current.elt
-    current.aa = e.animate(current.anim, current.time)
-    current.id = setTimeout(animate, current.time)
+    let {elt, anim, time} = current
+    current.aa = elt.animate(anim, time)
+    current.id = setTimeout(animate, time)
     run.innerText = '||'
 }
 function pause() {

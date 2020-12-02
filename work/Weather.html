@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
-    <link rel="icon" href="../images/Weather.png">
-  <title></title>
+  <link rel="icon" href="../images/icon192.png">
+  <title>Open Weather</title>
   <style>
     body {
         max-width: 420px;
@@ -15,41 +15,26 @@
         margin: 12px;
         vertical-align: top;
     }
-    p {
-        margin: 0;
-    }
-    .dar {
-        width: 180px;
-    }
+    p { margin: 0; }
+    b { font-size: 18px; }
+    pre { font-size: 14px; }
+    .dar { width: 42%; }
     #main {
-        width: 380px;
+        box-sizing: border-box;
+        width: 100%;
         padding: 20px;
         text-align: center;    
         background: #9cf;
         font-size: 24px;
         margin: 0;
     }
-    #saat {
-        font-size: 48px;
-    }
-    #yer {
-        margin: 10px;
-    }
-    b {
-        font-size: 18px;
-    }
-    pre {
-        font-size: 14px;
-    }
-    #err {
-        color:red
-    }
+    #yer { margin: 10px; }
+    #err { color:red }
   </style>
 </head>
 
 <body>
 <div id=main>
-<p id=saat>time</p>
 <p id=yer>location</p>
 <p><img id=icon>
 <span id=hava>weather</span></p>
@@ -73,51 +58,43 @@
   <a href="http://eecs.oregonstate.edu/ecampus-video/CS290/core-content/ajax-forms/js-http.html" 
    target="NewTab">openweathermap example</a> (old)<br>
 </p>
-<p>Bu eski yöntem, 2015'ten beri fetch() kullanıyoruz
+<p><i>Bu eski yöntem, 2015'ten beri fetch() kullanıyoruz</i>
 </p>
 </div>
 
 <script>
 "use strict";
-// Clock
-var hm;
-function twoDigits(t) {
-    if (t>9) return ""+t;
-    return "0"+t;
-}
 function toHM(t, round) {
     let d = t ? new Date(t*1000) : new Date()
     if (round && d.getSeconds()>29)
         d = new Date((t+30)*1000) //round
     let h = d.getHours()
     let m = d.getMinutes()
+    let twoDigits = t => (t>9? '' : '0')+t
     return twoDigits(h)+":"+twoDigits(m)
 }
-function setHourMin() {
-    hm = toHM()  //current time
-    document.title = "Clock "+hm
-}
-function count() {
-    let d = new Date();
-    let sec = twoDigits(d.getSeconds());
-    if (sec == "00") setHourMin();
-    saat.innerText = hm+":"+sec;
-    setTimeout(count, 1000);
+async function toJSON(url) {
+    let r = await fetch(url)
+    if (!r.ok) error(r.statusText)
+    return r.json()
 }
 // Location
 var lat, lon;  //global values
-function askLocation(result) {
+async function askLocation() {
+    let name = 'geolocation'
+    let result = await navigator.permissions.query({name})
     if (result.state == 'denied') {
-        fetch("https://ipinfo.io/json")
-        .then(r => r.json()).then(getLocation2, error)
+        let url = "https://ipinfo.io/json"
+        toJSON(url).then(getLocation2, error)
     } else  {
-        navigator.geolocation.getCurrentPosition(getLocation1, error);
+        navigator.geolocation
+        .getCurrentPosition(getLocation1, error);
     }
 }
 function getLocation2(p) { //Approximate
     console.log("ipinfo.io", p.city)
-    let a = p.loc.split(',')
-    lat = Number(a[0]); lon = Number(a[1]); 
+    let [x, y] = p.loc.split(',')
+    lat = Number(x); lon = Number(y); 
     askWeather()
 }
 function getLocation1(p) { //Accurate
@@ -127,10 +104,10 @@ function getLocation1(p) { //Accurate
 }
 // Weather
 var accessKey;
-function askWeather() {
+async function askWeather() {
     console.log(lat, lon); 
-    const url = "https://api.openweathermap.org/data/2.5/weather?"
-    let u = url+"lat="+lat+"&lon="+lon+"&APPID="+accessKey;
+    const U = "https://api.openweathermap.org/data/2.5/weather?"
+    let url = U+"lat="+lat+"&lon="+lon+"&APPID="+accessKey;
     hava.innerText = "getting weather"
     detay.innerText = ''
     gunes.innerText = ''
@@ -142,31 +119,32 @@ function askWeather() {
           showWeather(JSON.parse(xhttp.responseText))
        else hava.innerText = "XX"
     }
-    xhttp.open("GET", u, true); xhttp.send()
+    xhttp.open("GET", url, true); xhttp.send()
     */
-    fetch(u).then(r => r.json()).then(showWeather)
-}
-function showWeather(data) {
+   let data = await toJSON(url)
+//  fetch(url).then(r => r.json()).then(showWeather)
+// }
+// function showWeather(data) {
     let w = data.weather[0]; showIcon(w.icon)
     let celsius = convert(data.main.temp).toFixed(0)
-    let hh = w.main+"  "+celsius+"°", ss = data.sys
-    let yy = data.name+', '+ss.country
+    let hh = w.main+"  "+celsius+"°", {sys} = data
+    let yy = data.name+', '+sys.country
     hava.innerText = hh; yer.innerText = yy
-    console.log(hh, yy)
+    console.log(hh, yy); console.log(sys)
     lat = data.coord.lat; lon = data.coord.lon
     let loc = "["+lat.toFixed(2)+", "+lon.toFixed(2)+"]"
     detay.innerText = hh+'\n'+yy+'\n'+loc
         +'\nWind  '+data.wind.speed+' m/s'
         +'\nPressure '+data.main.pressure+' hpa'
         +'\nHumidity '+data.main.humidity+'%'
-    let s1 = ss.sunrise, s2 = ss.sunset, nn = (s1+s2)/2
-    console.log(s1, ss, s2)
-    gunes.innerText = 'Rise '+toHM(s1, 1)
-        +'\nNoon '+toHM(nn, 1)+'\nSet  '+toHM(s2, 1)
+    let {sunrise, sunset} = sys, noon = (sunrise+sunset)/2
+    gunes.innerText = 'Rise '+toHM(sunrise, 1)
+        +'\nNoon '+toHM(noon, 1)+'\nSet  '+toHM(sunset, 1)
 }
 function showIcon(i) {
     const URL = "https://openweathermap.org/img/w/"
     icon.src = URL+i+".png"
+    document.querySelector('link').href = icon.src
 }
 function convert(kelvin){
     return (kelvin - 273.15);
@@ -180,7 +158,7 @@ function askUser() {
 }
 function error(e) {
     main.style.display = "none"; //hide
-    refs.style.display = "none";
+    //refs.style.display = "none";
     err.style.display = ''; //show
     throw e
 }
@@ -197,13 +175,8 @@ function getAPIkey() {
         accessKey = askUser()
     }
 }
-
-    err.style.display = "none";
-    window.onfocus = setHourMin;
-    setHourMin(); count(); 
-    getAPIkey(); showIcon('01n');
-    navigator.permissions.query({name:'geolocation'})
-    .then(askLocation);
+    err.style.display = "none"
+    getAPIkey(); askLocation()
 </script>
 
 </body>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
-    <link rel="icon" href="../images/icon192.png">
-    <title>SVG and Canvas </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="icon" href="../images/icon192.png">
+  <title>SVG and Canvas </title>
 
   <style>
     body { max-width: 500px; }
@@ -72,12 +72,11 @@ function doZoom(event) {
 	event.preventDefault();
 	zoom.to({ element: event.target, pan: false });
 }
-
     sample.innerText = draw
     out.innerText = svg.outerHTML
     draw()
     document.body.style.transition = "all 2s ease"
-	document.body.onclick = doZoom
+	svg.onclick = doZoom; canvas.onclick = doZoom
 </script>
 
 </body>

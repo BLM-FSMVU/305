@@ -1,8 +1,10 @@
 
-[Repository](https://github.com/BLM-FSMVU/305/)
+[Repository](https://github.com/BLM-FSMVU/305/) &emsp; [Outline](../Course_outline.html)
 
 ### Class work
 
+* [CW#13 -- Open Weather](Weather.html)
+* [CW#12 -- GitHub Users](GitHub_Users.html)
 * [CW#11 -- Animation](https://maeyler.github.io/JS/simple/JS_Animation.html)
 * [CW#10 -- ArrayBuffer & Crypto](Crypto.html)
 * [CW#9 -- Page made by JS](Page_by_JS.html)
