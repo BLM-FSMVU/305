@@ -27,6 +27,7 @@
 
 ### Homework
 
+* [GitHub takım çalışması](../github/takımlar)
 * [HW#3 -- Git and Animation](../anim/Animation.html)
 * [HW#2 -- Database and timing](Students.html)
 * [HW#1 -- Poisson Table](https://maeyler.github.io/opt/work/Poisson)

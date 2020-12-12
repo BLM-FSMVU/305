@@ -53,7 +53,8 @@ GitHub içindeki *Pull request* gerekli olmadı
 
 Takımların işini bir arada görmek için liderler `Rebase` kullandı. 
 Böylece commit'ler tesbih tanesi gibi dizildi. 
-Proje sonunda yedi dalı birleştirmek için Merge kullandık.
+Proje sonunda yedi dalı birleştirmek için 
+[Merge kullandık](https://github.com/BLM-FSMVU/305/network).
 İki yaklaşımın avantajlarını görmüş olduk.
 
 
@@ -74,6 +75,9 @@ git fetch blm
 git reset blm/main --hard
 git push [--force]
 ```
+
+[Referans](https://www.atlassian.com/git/tutorials/syncing)
+
 
 ### Teşekkürler
 
