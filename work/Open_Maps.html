@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link rel="icon" href="https://leafletjs.com//docs/images/favicon.ico">
+    <title>Open Maps </title>
+
+  <style>
+    body { margin: 0; }
+    h2 { margin: 10px 0; }
+    pre { overflow-x: auto; }
+    #one, #two { margin: 10px; }
+    #map {
+        height:500px; width:100%;
+        box-sizing: border-box;
+        border: 0;
+    }
+  </style>
+</head>
+
+<body>
+<div id=one>
+    <h2 id=title></h2>
+    <input id=but type=button value="Run" onClick="start()"> &emsp;
+    Zoom = <span id=out></span>
+    <!-- <input type=checkbox onClick="mapType(checked)">Satellite -->
+</div>
+<hr />
+<div id=map></div>
+<hr />
+<div id=two>
+    <b>Sample code</b>
+    <pre id=sample></pre>
+    <hr />
+    </p>
+    <p>Ref: 
+    <a href="https://www.openstreetmap.org/about" target="NewTab">OpenStreetMap</a>
+    &emsp;
+    <a href="https://leafletjs.com/examples/" target="NewTab">Leaflet JS</a>
+    </p>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+<!-- Make sure you put JS AFTER CSS -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+"use strict"
+var MAP  //global
+function init() {
+    //initial coordinates are given: 50. Yil Parki
+    let p = {lat:40.970021, lng:29.057876}
+    console.log('init at', p)
+    //L is global object from leaflet
+    MAP = L.map('map').setView([p.lat, p.lng], 10)
+    let u = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+    let attribution = '&copy; OpenStreetMap contributors'
+    L.tileLayer(u, {attribution}).addTo(MAP)
+    let report = () => out.innerText = MAP.getZoom()
+    MAP.on('zoom', report); report()
+    MAP.on('click', e => console.log(e.latlng))
+}
+var incr = 0;
+function stop() {
+    but.value = "Run"
+    but.onclick = start
+    incr = 0
+}
+function start() {
+    but.value = "Stop"
+    but.onclick = stop
+    incr = 1; zoom()
+}
+function zoom() {
+    if (incr == 0) return
+    let MIN = 5, MAX = MAP.getMaxZoom()
+    let z = MAP.getZoom() + incr
+    MAP.setZoom(z)
+    setTimeout(zoom, 700)
+    if (z <= MIN) incr = 1
+    if (z >= MAX) incr = -1
+}
+title.innerText = document.title
+sample.innerText = init; init()
+</script>
+
+</body>
+</html>
