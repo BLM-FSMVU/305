@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"    content="width=device-width">
+  <meta name="author"      content="M A Eyler, Istanbul, 2020" />
+  <link rel="icon" href="../images/icon192.png">
+  <title>Google Drive API</title>
+
+  <style>
+    body {max-width: 540px;}
+    img {
+        position: fixed;
+        top:8px; right:8px;
+        width: 50px;
+    }
+    pre {
+        overflow-x: auto;
+        line-height: 1.5;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<h3 id=title></h3>
+<img id=image>
+<p>
+    If you give permissson to access Google Drive, 
+    you will get a list of text files in your Drive
+    and may upload local text files to your Drive.
+</p>
+<button id=auth onclick="authenticate()">Sign in</button> &nbsp;
+<button id=exec disabled onclick="execute()">List</button> &nbsp;
+<input type=file hidden id=button onChange="fileSelect()"
+ accept="text/*, .js, .java, .json, .md">
+<button id=upload disabled onclick="button.click()">Upload</button>
+&nbsp;<span id=user></span>
+<pre id=out></pre>
+
+<script src="https://apis.google.com/js/api.js"></script>
+<script>
+"use strict";
+/**
+ * Sample JavaScript code for drive.files.list
+ * See instructions for running APIs Explorer code samples locally:
+ * https://developers.google.com/explorer-help/guides/code_samples
+ */
+function stringify(m) {
+    if (typeof m === "string") return m
+    return JSON.stringify(m,'',2)
+}
+function log(m) {
+    if (m.result) { log(m.result); return }
+    console.log(m); out.style.color = ''
+    out.innerText = stringify(m)
+}
+function error(e) {
+    if (e.result) { error(e.result); return }
+    if (e.error) { error(e.error); return }
+    console.error(e); out.style.color = 'red'
+    out.innerText = stringify(e)
+}
+async function authenticate() {
+  try {
+    log("Authorization begins");
+    await gapi.auth2.getAuthInstance().signIn()
+    showFiles()
+  } catch (e) { error(e) }
+}
+async function showFiles() {
+    const DRIVE = 
+    "https://content.googleapis.com/discovery/v1/apis/drive/v3/rest"
+    if (!gapi.client.drive) {
+      log("Load drive client");
+      await gapi.client.load(DRIVE)
+      log("GAPI client loaded")
+    }
+    exec.disabled = false; upload.disabled = false; exec.click()
+  
+}
+// Make sure sign-in is complete before calling this method.
+function execute() {
+    log("Drive API is called");
+    //https://developers.google.com/drive/api/v3/search-files
+    let q = "trashed = false and (mimeType contains 'text'"
+          + " or mimeType contains 'json')"
+    let fields = 'files(id,name,size,modifiedTime,webViewLink)'
+    gapi.client.drive.files.list({q, fields})
+      .then(report, error)
+}
+function report(response) {
+    showProfile()
+    let f = response.result.files
+    log("response.result.files: "+f.length);
+    if (f.length == 0) return
+    let a = f.map(fileToString)
+    out.innerHTML = a.join('\n'); console.log(f)
+    files = f.map(x => x.id+' '+x.name)
+}
+function fileToString(x) {
+    let [d, h, m] = x.modifiedTime.split(/[T:]/)
+    let s = x.size.padStart(9) //padding with blanks
+    let a = '<a href='+x.webViewLink+' target=drive>'+x.name+'</a>'
+    return d+' '+h+':'+m+' '+s+'  '+a
+}
+function isText(f) {
+    console.assert(f instanceof File);
+    return f.type.startsWith("text") 
+         || f.name.endsWith(".js") || f.name.endsWith(".java")
+         || f.name.endsWith(".json") || f.name.endsWith(".md");
+}
+function fileSelect() {
+    let f = button.files[0]
+    if (isText(f)) {
+        reader.onload = function(evt) { //text
+            let data = evt.target.result
+            saveFile(f.name, f.type, data)
+        };
+        reader.readAsText(f);
+    } else {
+        error(f.name+" is not a text file")
+    }
+}
+function saveFile(name, mimeType, body) {
+    log(name+' '+mimeType+' '+body.length+' bytes')
+    gapi.client.drive.files.create({name, mimeType})
+    .then(write, error)
+  function write(p) { //inner function uses parameters above
+    let result = p.result
+    if (!result || !result.id) { error(p); return }
+    console.log(result)
+    let path = 'https://www.googleapis.com/upload/drive/v3/files/'+result.id
+    let method = 'PATCH', params = { uploadType: 'media' }
+    let headers = {'Content-Type': mimeType}  //file type specified here
+    gapi.client.request({path, method, headers, params, body})
+    .then(log, error)
+  }
+}
+function currentUser() {
+    return gapi.auth2.getAuthInstance().currentUser.get()
+}
+function showProfile() {
+    let p = currentUser().getBasicProfile()
+    image.src = p.getImageUrl()
+    user.innerText = p.getEmail()
+}
+const reader = new FileReader(),
+  apiKey = 'AIzaSyCH22pYgwYoWme6CFPiU3i_JLD-SgATteU',
+  clientId = "864962883135-ut9cl3g1jlqv1frlp2p6cq9r3jsfflkv.apps.googleusercontent.com",
+  scope = 'https://www.googleapis.com/auth/drive.file'  //readonly'
+async function init() {
+    await gapi.auth2.init({ apiKey, clientId, scope })
+    if (currentUser().getId()) try {
+      showFiles()
+    } catch (e) { error(e) }  
+}
+const ORIGIN = "https://maeyler.github.io"
+if (location.host.includes('github') && location.origin != ORIGIN)
+    location = ORIGIN+location.pathname
+var files = []  //array of id+' '+name for each item
+window.onerror = error  //never called
+title.innerText = document.title
+gapi.load("client:auth2", init);
+</script>
+</body>
+</html>

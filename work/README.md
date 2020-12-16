@@ -3,6 +3,7 @@
 
 ### Class work
 
+* [CW#15 -- Write to the cloud](Drive_API.html)
 * [CW#14 -- OpenStreetMap](Open_Maps.html)
 * [CW#13 -- Open Weather](Weather.html)
 * [CW#12 -- GitHub Users](GitHub_Users.html)
