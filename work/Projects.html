@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="https://blm-fsmvu.github.io/305/images/icon192.png">
+    <title>Student Projects </title>
+  <style>
+    body { max-width: 440px; }
+    li a {
+        display: inline-block;
+        width: 130px;
+    }
+    ul { margin: -8px; }
+    li { margin: 10px; }
+    #out {
+        font-size: 16px;
+        background: antiquewhite;
+        padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+<h2 id=title></h2>
+<h2>BLM 305 -- 2020 </h2>
+<p>Links to the Project and to the Repo for each student</p>
+<ul id=out></ul>
+<hr />
+
+<script>
+"use strict";
+const data = 
+`AGCAKOYUN	TermProject/BreakBrick.html	mertagcakoyun	AdvancedProgrammingClass
+AHMED	Term%20Project/	moaazgab	AdvancedProgramming
+AKSOY	TermProject/	yaseminaksoy	Advanced-Programming-Techniques
+ATA	termProject/	atahanata	ileriprogramlama2021
+ATAK	term_project/undesigned_cal.html	furkan-atakk	taskPrivate
+ATAY	Project/Chess.html	mertcanfsm	AdvancedProg
+ATIK	PROJE/	yunusatik	Advanced-Programming
+AYAZ	Project/quiz.html	mustafaayaz	JS_School
+BAYDİLİ	Term_Project/Tetris.html	bbaydili	ileriprogramlama
+BEK	TermProject/	enesbek	Advanced_Programming
+BURSALI	TermProject/News.html	muhammedalibursali	AdvancedProgramming
+CELIK	PROJE/proje_adem.html	ademyavuzcelikk	JavaScriptRepo
+CEYHAN	term_project/ping_pong.html	afceyhan	Advanced-Programming-Techniques
+DEMIRHAN	Tetris/	dilarademirhan	BLM19305E
+DONMEZ	Project/app.html	donmezyusuf	Advanced-Programming-Techniques
+DURMUS	GuitarPlayer/VirtualGuitar.html	enesdurmus	AdvancedTechWorks
+DURSUN	proje/memoryGame.html	omerfarukkdursun	advancedprogramming
+EGE	TermProject/cagriproje.html	cagriege	ileriProgramlama
+GUNDOGAN	Project/DreamTeam.html	furkangundogan	AdvProg
+GURER	Project/TriggerTracker.html	ebeyzag	BLM19305E
+KACI	Project/tower_of_hanoi.html	abdussametkaci	advanced_programming
+KARA	Project/MyMusic.html	melikekara	BLM19305E
+H KAYA	TodoAppProject/	halil-kaya	AdvancedProgramming
+Z KAYA	proje/memory_game.html	zelihakaya96	html-Js-Works
+A KILIC	Projects/Sudoku/	aakifklcc	Advenced-Programming-Techniques
+M KILIC	PROJE/	mertiq	Advanced-Programming
+KISLAK	termProject/tetris.html	kislakba	JavaScript-Course-Example
+KIZILCIN	Projects/TermProject/fatalClimb.html	eneskzlcn	AdvancedProgramming
+KOPUZ	SimonSays/SimonSays.html	burakkopuz	advanced-programming-homework
+KOTAN	Term_project_99/quiz_brooklyn99.html	seymakotan	JS_AdvProg
+KUCUKER	TermProject/KelimeTahmin.html	omerkucuker	AdvancePrograming
+KUMRU	Proje/	ahmetkumru	AdvancedProgramming
+MADEN	TermProject_WeatherApp/	ayhanarslanmaden	AdvProgramming
+NEOLDUM	proje/Goz_Testi.html	hneoldum	Adv.Prog.Tq
+ORUC	proje/brick-breaker-game-main/	yusaorucfsmvu	AdvancePrograming
+SAHIN	TermProject/MemoryGame.html	aycansahin	ClassHW
+SAPOGLU	Project/index.html	asapoglu	AProgTech
+TARLA	TermProject/	ibrahimtarla	Advanced_Programming_With_Java_Script
+TOPALOGLU	TermProject/termproject.html	sametemret	AdvanceProg_Works
+TOPCU	WeatherForecast/	busetopcu	AdvancedProgrammingTech
+TURAN	TermProject/mainP.html	ribatturan	AdvancedProgrammingWorks
+USTA	jsproject/countries.html	emreustaa	AdvancedProgrammingLecture
+YARIS	Tic_Tac_Toe/tictactoe.html	halilyaris	Advenced_Programming
+YILMAZ	Projeler/LiveClock/	mesutyilmaz01	Apt
+ZULALOGLU	SemesterProject/drumPad.html	fberazulaloglu	AdvancedProgramming
+ZUMBEROGLU	Project/	ahmetzumber	advanced_programming`
+
+function toItem(x) {
+    let [n, p, u, r] = x.split('\t')
+    let a = "https://"+u+".github.io/"+r+'/'
+    return "<a href="+a+p+" target='Project'>"+n+"</a> "
+      +"&emsp;<a href="+a+" target='Project'>"+u+"</a>"
+}
+title.innerText = document.title
+let a = data.split('\n').map(toItem)
+out.innerHTML = //a.join('<br>\n')
+           '<li>'+a.join('\n<li>')
+</script>
+</body>
+</html>
