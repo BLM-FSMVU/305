@@ -7,7 +7,7 @@
   <title>Open Weather</title>
   <style>
     body {
-        max-width: 420px;
+        max-width: 450px;
         margin: 0;
     }
     div {
@@ -17,7 +17,10 @@
     }
     p { margin: 0; }
     b { font-size: 18px; }
-    pre { font-size: 14px; }
+    pre {
+        overflow-x: auto;
+        font-size: 14px;
+    }
     .dar { width: 42%; }
     #main {
         box-sizing: border-box;
@@ -33,7 +36,19 @@
   </style>
 </head>
 
-<body>
+<body><pre>
+ Kendi reponuza kopyalayın ve şu düzeltmeleri yapın:
+
+ 1) Verilen enlem/boylam noktasında hava durumu
+
+ 2) Ruzgarın hızını 3.6 ile çarparak kph olarak gösterin
+
+ 3) Ruzgar hızının altına (derece olarak) yönünü de yazın 
+
+ Uygulamayı çalıştırmak için KEY gerekecek
+
+ Yaptığınız işi bir PDF raporunda gösterin/anlatın
+</pre>
 <div id=main>
 <p id=yer>location</p>
 <p><img id=icon>

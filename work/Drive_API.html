@@ -23,7 +23,25 @@
 </head>
 
 <body>
-
+<pre>
+ Bu sayfayı kendi reponuza alıp şöyle değiştirin:
+ 1. Her dosyanın yanında minik bir Delete button ilgili dosyayı silsin 
+ 2. Dosya adına tıklayınca aynı sayfa içinde göstersin
+  fileToString()  içinde iki eleman tanımlayabilirsiniz:
+      let b = '&lt;b id='+x.id+'>x&lt;/b>'
+      let u = '&lt;u id='+x.id+'>'+x.name+'&lt;/u>'
+  
+  out.onclick = (e) => {
+      let t = e.target
+      if (!t || !t.id) return
+      if (t.tagName == 'B') 
+           removeFile(t.id)
+      else displayFile(t.id)
+  }
+ Daha güzel çözümler de bulabilirsiniz -- en azından bu kadarı olmalı 
+  
+ Ekran resmi ve eklediğiniz kod PDF içinde olsun
+</pre>
 <h3 id=title></h3>
 <img id=image>
 <p>

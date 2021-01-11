@@ -7,7 +7,7 @@
 * [CW#14 -- OpenStreetMap](Open_Maps.html)
 * [CW#13 -- Open Weather](Weather.html)
 * [CW#12 -- GitHub Users](GitHub_Users.html)
-* [CW#11 -- Animation](https://maeyler.github.io/JS/simple/JS_Animation.html)
+* [CW#11 -- Animation](JS_Animation.html)
 * [CW#10 -- ArrayBuffer & Crypto](Crypto.html)
 * [CW#9 -- Page made by JS](Page_by_JS.html)
 * [CW#8 -- File operations](Files.html)
@@ -17,7 +17,7 @@
 * [CW#4 -- Text to Objects](ObjectList.html)
 * [CW#3 -- Objects and Arrays](chap4.html)
 * [CW#2 -- Making a web page](Counting.html)
-* [CW#1 -- Browser tools](https://maeyler.github.io/JS/hard/Dragging.html)
+* [CW#1 -- Browser tools](Dragging.html)
 
 
 ### Exams
