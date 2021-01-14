@@ -38,17 +38,19 @@
 
 <body><pre>
  Kendi reponuza kopyalayın ve şu düzeltmeleri yapın:
-
  1) Verilen enlem/boylam noktasında hava durumu
-
  2) Ruzgarın hızını 3.6 ile çarparak kph olarak gösterin
-
  3) Ruzgar hızının altına (derece olarak) yönünü de yazın 
 
  Uygulamayı çalıştırmak için KEY gerekecek
 
  Yaptığınız işi bir PDF raporunda gösterin/anlatın
 </pre>
+<hr>
+<div>
+  Lat/Lon <input id=mahal type=text value="41 29">
+</div>
+
 <div id=main>
 <p id=yer>location</p>
 <p><img id=icon>
@@ -69,24 +71,16 @@
   <a href="https://openweathermap.org/appid" 
    target="NewTab">here</a> 
 </p>
-<p id=refs>Ref: 
-  <a href="http://eecs.oregonstate.edu/ecampus-video/CS290/core-content/ajax-forms/js-http.html" 
-   target="NewTab">openweathermap example</a> (old)<br>
-</p>
-<p><i>Bu eski yöntem, 2015'ten beri fetch() kullanıyoruz</i>
-</p>
 </div>
 
 <script>
 "use strict";
-function toHM(t, round) {
-    let d = t ? new Date(t*1000) : new Date()
-    if (round && d.getSeconds()>29)
-        d = new Date((t+30)*1000) //round
-    let h = d.getHours()
-    let m = d.getMinutes()
-    let twoDigits = t => (t>9? '' : '0')+t
-    return twoDigits(h)+":"+twoDigits(m)
+function toHM(t) { // t in seconds -- convert to minutes
+    //number of hours since midnight, in local time
+    let h = (t%86400)/3600  // 0<=h<24
+    let m = (h%1)*60        // 0<=m<60
+    let twoDigits = t => (t<10? '0' : '')+Math.trunc(t)
+    return twoDigits(h)+":"+twoDigits(m+0.5) //round
 }
 async function toJSON(url) {
     let r = await fetch(url)
@@ -126,17 +120,7 @@ async function askWeather() {
     hava.innerText = "getting weather"
     detay.innerText = ''
     gunes.innerText = ''
-    /* replace this code by fetch()
-    let xhttp = new XMLHttpRequest()
-    xhttp.responseType = "text"
-    xhttp.onreadystatechange = () => {
-       if (xhttp.readyState == 4 && xhttp.status == 200) 
-          showWeather(JSON.parse(xhttp.responseText))
-       else hava.innerText = "XX"
-    }
-    xhttp.open("GET", url, true); xhttp.send()
-    */
-   let data = await toJSON(url)
+    let data = await toJSON(url)
 //  fetch(url).then(r => r.json()).then(showWeather)
 // }
 // function showWeather(data) {
@@ -145,16 +129,22 @@ async function askWeather() {
     let hh = w.main+"  "+celsius+"°", {sys} = data
     let yy = data.name+', '+sys.country
     hava.innerText = hh; yer.innerText = yy
-    console.log(hh, yy); console.log(sys)
     lat = data.coord.lat; lon = data.coord.lon
-    let loc = "["+lat.toFixed(2)+", "+lon.toFixed(2)+"]"
-    detay.innerText = hh+'\n'+yy+'\n'+loc
-        +'\nWind  '+data.wind.speed+' m/s'
-        +'\nPressure '+data.main.pressure+' hpa'
-        +'\nHumidity '+data.main.humidity+'%'
+    mahal.value = lat.toFixed(2)+", "+lon.toFixed(2)
+    let wind = (3.6*data.wind.speed).toFixed(0)
+    let pres = (0.750062*data.main.pressure).toFixed(0)
+    const WIND = ['N','NE','E','SE','S','SW','W','NW','N']
+    let d = (data.wind.deg/45).toFixed(0)
+    detay.innerText = hh  //+'\n'+yy +'\n['+mahal.value+"]"
+        +'\nWind  '+wind+' km/h '+WIND[d]
+        +'\nPressure  '+pres+' mm'
+        +'\nHumidity  %'+data.main.humidity
     let {sunrise, sunset} = sys, noon = (sunrise+sunset)/2
-    gunes.innerText = 'Rise '+toHM(sunrise, 1)
-        +'\nNoon '+toHM(noon, 1)+'\nSet  '+toHM(sunset, 1)
+    gunes.innerText = 'Rise '+toHM(sunrise+data.timezone)
+        +'\nNoon '+toHM(noon+data.timezone)
+        +'\nSet  '+toHM(sunset+data.timezone)
+        +'\nZone '+(data.timezone/3600)
+    console.log(hh, yy, 'Wind '+data.wind.deg+'° '+WIND[d])
 }
 function showIcon(i) {
     const URL = "https://openweathermap.org/img/w/"
@@ -192,6 +182,14 @@ function getAPIkey() {
 }
     err.style.display = "none"
     getAPIkey(); askLocation()
+mahal.onkeyup = e => {
+  let t = e.target
+  if (e.keyCode === 13) {
+    [lat, lon] = mahal.value.split(/[ ,]+/)
+    askWeather()
+  }
+  if (e.keyCode === 27) t.blur()
+}
 </script>
 
 </body>
