@@ -18,6 +18,13 @@
         overflow-x: auto;
         line-height: 1.5;
     }
+    b {
+        margin: 2px;
+        padding: 0 2px;
+        background: red;
+        color: white;
+    }
+    b, u { cursor: pointer; }
   </style>
 
 </head>
@@ -120,8 +127,9 @@ function report(response) {
 function fileToString(x) {
     let [d, h, m] = x.modifiedTime.split(/[T:]/)
     let s = x.size.padStart(9) //padding with blanks
-    let a = '<a href='+x.webViewLink+' target=drive>'+x.name+'</a>'
-    return d+' '+h+':'+m+' '+s+'  '+a
+          + ' <b id='+x.id+'>x</b>'  //delete button
+          + ' <u id='+x.id+'>'+x.name+'</u>'
+    return d+'  '+h+':'+m+' '+s
 }
 function isText(f) {
     console.assert(f instanceof File);
@@ -140,6 +148,17 @@ function fileSelect() {
     } else {
         error(f.name+" is not a text file")
     }
+}
+function displayFile(fileId, name) {
+    let alt = "media"
+    gapi.client.drive.files.get({fileId, alt})
+    .then(r => out.innerText = r.body, error)
+    //result is false, body contains file contents
+}
+function removeFile(fileId, name) {
+    if (confirm('Are you deleting "'+name+'"?'))
+        gapi.client.drive.files.delete({fileId})
+        .then(execute, error)
 }
 function saveFile(name, mimeType, body) {
     log(name+' '+mimeType+' '+body.length+' bytes')
@@ -181,6 +200,13 @@ var files = []  //array of id+' '+name for each item
 window.onerror = error  //never called
 title.innerText = document.title
 gapi.load("client:auth2", init);
+out.onclick = (e) => {
+    let t = e.target
+    if (!t || !t.id) return
+    console.log(t.tagName, t.id)
+    if (t.tagName == 'U') displayFile(t.id, t.innerText)
+    else removeFile(t.id, t.nextElementSibling.innerText)
+}
 </script>
 </body>
 </html>
