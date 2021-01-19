@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="../images/icon192.png">
+    <title>Final Exam </title>
+
+    <style>
+      body {
+        margin: auto;
+        padding: 8px;
+        max-width: 550px;
+      }
+      pre { overflow-x: auto; }
+    </style>
+</head>
+
+<body>
+<h2 id=title></h2>
+
+<div><h3>Q1</h3>
+<pre id=out1></pre>
+</div>
+
+<div><h3>Q2</h3>
+<pre id=out2>a)
+  for (let d of data) 
+    if (d == v) return d
+  return null
+b)
+  let m = {}
+  for (let d of data) 
+    m[d.valueOf()] = d 
+ // m[50] is the desired Point
+
+c) b is faster -- indexed search
+d)
+  data.map((a, i) => createHTML(a, i))
+  data.map(createHTML) //no new function
+</pre>
+</div>
+
+<div><h3>Q3</h3>
+<pre id=out3>
+a) mix = (a, b, t) => (1-t)*a + t*b
+
+b) mix(a, b, 1/2) is the same as (a+b)/2
+
+c)
+</pre>
+</div>
+
+<div><h3>Q4</h3>
+<pre id=out4></pre>
+</div>
+
+<div><h3>Q5</h3>
+<pre>a = [11, 23, 5, 2, 7]
+a.size // undefined
+a.length // 5
+a.map(x => x+1) // [12, 24, 6, 3, 8]
+a.filter(x => x<10) // [5, 2, 7]
+a.sort((a,b) => a-b) // [2, 5, 7, 11, 23]
+</pre></div>
+
+<div><h3>Q6</h3>
+<pre id=out6>
+  let r = await fetch(u); 
+  let s = await r.clone().text(); 
+  let x = await r.json()
+</pre>
+</div>
+
+<div><h3>Q7</h3>
+<pre>a) 
+evt = {type:'click', id:16, pos:{lat:40.4321, lng:29.1648}} //Event
+prov = {id:16, name:'Bursa', loc:{lat:40.19, lng:29.08}} //Province
+coord = {lat:40.43, lon:29.16, time:1610975923, zone:3}  //Location
+w = {id:746, name:"Gemlik", temp:-2, coord, main:"Clear"}  //Object
+</pre>
+<img src="Q7 final.jpg" width="100%">
+b) instead of evt.pos, use prov.loc
+</div>
+  
+<div><h3>Q8</h3>
+<pre id=out7>  &lt;body>
+    &lt;h2>Final exam&lt;/h2>
+    &lt;hr>
+    &lt;div>
+      &lt;p>8 questions&lt;/p>
+      &lt;p>60 minutes&lt;/p>
+    &lt;/div>
+  &lt;/body>
+</pre></div>
+
+<script>
+"use strict";
+title.innerText = document.title
+function displayValue(s) {
+  return '\n'+s+' = '+eval(s)
+}
+
+//Q1
+class Point {
+  constructor(x, y) {
+    this.x = Number(x); this.y = Number(y)
+    this.val = Math.sqrt(x*x + y*y)
+    this.str = '['+this.x+','+ this.y+']'
+  }
+  //distance to [0,0]
+  valueOf() { return this.val } 
+  toString() { return this.str }
+  static fromString(s) {
+    s = s.substring(1, s.length-1)
+    let [x, y] = s.split(',')
+    return new Point(x, y)
+  }
+}
+let p = new Point(30, 40)
+let q = Point.fromString("[30,40]")
+let n = '2'
+out1.innerText = Point
+  + displayValue("p.valueOf()") + displayValue("p+2")
+  + displayValue("p+'2'") + displayValue("p*'2'")
+console.log('p =', p)
+console.log('q =', q)
+
+//Q2
+
+//Q3
+let mix = (a, b, t) => (1-t)*a + t*b
+function midPoint(p1, p2) { // Points
+    let x = mix(p1.x, p2.x, 0.5)
+    let y = mix(p1.y, p2.y, 0.5)
+    return new Point(x, y)
+}
+out3.innerText += midPoint
+
+//Q4
+function Q4(u) {
+  let [ , , x, repo, ...a] = u.split('/')
+  let [user] = x.split('.')
+  let file = a.pop()
+  return {user, repo, file}
+}
+let u = 'https://blm-fsmvu.github.io/305/work/Graphics.html'
+console.log('Q4', Q4(u))
+out4.innerText = Q4
+
+
+//Q5
+let a = [11, 23, 5, 2, 7]
+console.log('Q5 a =', a)
+
+let s, b
+function Q6() {
+  function testJSON(url) {
+    fetch(url).then(r => {
+      r.clone().text().then(t => s=t)
+      r.json().then(x => b=x) //s, b global
+    })
+  }
+  testJSON('https://api.github.com/users/blm-fsmvu/repos')
+  return "testJSON called"
+}
+console.log('Q6', Q6())
+out6.innerText += '\n'+Q6
+
+//Q7
+let evt = {type:'click', id:16, pos:{lat:40.4321, lng:29.1648}} //Event
+let prov = {id:16, name:'Bursa', loc:{lat:40.19, lng:29.08}} //Province
+let coord = {lat:40.43, lon:29.16, time:1610975923, zone:3}  //Location
+let w = {id:746, name:"Gemlik", temp:-2, coord, main:"Clear"}  //Object
+console.log('Q7 evt =', evt, prov, w)
+
+//Q8
+function elt(type, ...list) {
+  let e = document.createElement(type)
+  for (let c of list) {
+    e.appendChild(c instanceof Element? c
+             : document.createTextNode(c))
+  }
+  return e
+}
+out7.append(elt("div", //body
+   elt("h2", "Final exam"), 
+   elt("hr"), 
+   elt("div",
+     elt("p", "8 questions"),    
+     elt("p", "60 minutes")
+   )
+))
+
+</script>
+
+</body>
+</html>
