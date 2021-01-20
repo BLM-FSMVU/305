@@ -13,32 +13,40 @@
         max-width: 550px;
       }
       pre { overflow-x: auto; }
+      i { color: red; }
     </style>
 </head>
 
 <body>
 <h2 id=title></h2>
+<i>Cevapları Console'da deneyin: <br>
+data hariç bütün değişkenler tanımlı</i>
 
 <div><h3>Q1</h3>
 <pre id=out1></pre>
+<i>"502" benim için sürpriz oldu<br>
+Diğer makul cevapları kabul ettim</i>
 </div>
 
 <div><h3>Q2</h3>
-<pre id=out2>a)
-  for (let d of data) 
-    if (d == v) return d
-  return null
-b)
-  let m = {}
-  for (let d of data) 
-    m[d.valueOf()] = d 
- // m[50] is the desired Point
+<pre id=out2>a) Search v within data:
+   for (let d of data) 
+     if (d == v) return d
+   return null
+
+b) Make an Object (instead of Map):
+   let m = {}
+   for (let d of data) 
+     m[d.valueOf()] = d 
+  // m[50] is the desired Point
 
 c) b is faster -- indexed search
-d)
-  data.map((a, i) => createHTML(a, i))
-  data.map(createHTML) //no new function
+
+d) Simplify:
+   data.map((a, i) => createHTML(a, i))
+   data.map(createHTML) //no new function
 </pre>
+<i>Kullanılan data Array bu sayfada eksik</i>
 </div>
 
 <div><h3>Q3</h3>
@@ -49,10 +57,13 @@ b) mix(a, b, 1/2) is the same as (a+b)/2
 
 c)
 </pre>
+<i>a, b iki sayı -- p1, p2 iki nokta<br>
+c şıkkında mix kullanmak gerekli</i>
 </div>
 
 <div><h3>Q4</h3>
 <pre id=out4></pre>
+<i>Başka çözümler de var ama bu çok zarif!</i>
 </div>
 
 <div><h3>Q5</h3>
@@ -62,14 +73,26 @@ a.length // 5
 a.map(x => x+1) // [12, 24, 6, 3, 8]
 a.filter(x => x<10) // [5, 2, 7]
 a.sort((a,b) => a-b) // [2, 5, 7, 11, 23]
-</pre></div>
+</pre>
+<i>Bu soruyu hemen herkes doğru yapmış</i>
+</div>
 
 <div><h3>Q6</h3>
-<pre id=out6>
+<pre id=out6>async/await:
   let r = await fetch(u); 
   let s = await r.clone().text(); 
-  let x = await r.json()
+  let b = await r.json()
+
+string: u, s (u could be URL)
+Promise: r.json(), r.text()
+Response: r, r.clone()
+b could be any type -- not asked
 </pre>
+<i>
+* Soruda a yazıyor ama diğer a ile karışmasın diye 
+bunu b yaptım <br> * Bir karakter farkı ile 
+<code>JSON.stringify(b,'',2)==s</code> sağlanmıyor
+</i>
 </div>
 
 <div><h3>Q7</h3>
@@ -80,7 +103,8 @@ coord = {lat:40.43, lon:29.16, time:1610975923, zone:3}  //Location
 w = {id:746, name:"Gemlik", temp:-2, coord, main:"Clear"}  //Object
 </pre>
 <img src="Q7 final.jpg" width="100%">
-b) instead of evt.pos, use prov.loc
+<i>class isimleri de önemli, oklar da...</i><br>
+<code>b) instead of evt.pos, use prov.loc</code>
 </div>
   
 <div id=out8><h3>Q8</h3>
@@ -92,23 +116,26 @@ b) instead of evt.pos, use prov.loc
       &lt;p>60 minutes&lt;/p>
     &lt;/div>
   &lt;/body>
-</pre></div>
+</pre>
+<i>Sayfanın nasıl göründüğü de sorulmuştu</i>
+</div>
 
 <script>
 "use strict";
 title.innerText = document.title
-function displayValue(s) {
-  return '\n'+s+' = '+eval(s)
-}
 
 //Q1
+function displayValue(s) {
+  let t = JSON.stringify(eval(s))
+  if (t.length > 15) t = t.substring(0, 10)+'...'
+  return '\n'+s+' = '+t
+}
 class Point {
   constructor(x, y) {
     this.x = Number(x); this.y = Number(y)
     this.val = Math.sqrt(x*x + y*y)
-    this.str = '['+this.x+','+ this.y+']'
+    this.str = '['+x+','+y+']'
   }
-  //distance to [0,0]
   valueOf() { return this.val } 
   toString() { return this.str }
   static fromString(s) {
@@ -138,34 +165,32 @@ function midPoint(p1, p2) { // Points
 out3.innerText += midPoint
 
 //Q4
-function Q4(u) {
+function parseURL(u) {
   let [ , , x, repo, ...a] = u.split('/')
   let [user] = x.split('.')
   let file = a.pop()
   return {user, repo, file}
 }
 let u = 'https://blm-fsmvu.github.io/305/work/Graphics.html'
-console.log('Q4', Q4(u))
-out4.innerText = Q4
+console.log('Q4', parseURL(u))
+out4.innerText = parseURL
 
 
 //Q5
 let a = [11, 23, 5, 2, 7]
 console.log('Q5 a =', a)
 
+//Q6
 let s, b
-function Q6() {
-  function testJSON(url) {
-    fetch(url).then(r => {
+function testJSON(u) {
+   fetch(u).then(r => {
       r.clone().text().then(t => s=t)
       r.json().then(x => b=x) //s, b global
-    })
-  }
-  testJSON('https://api.github.com/users/blm-fsmvu/repos')
-  return "testJSON called"
+   })
 }
-console.log('Q6', Q6())
-out6.innerText += '\n'+Q6
+testJSON('https://api.github.com/users/blm-fsmvu/repos')
+console.log('Q6 testJSON is called')
+out6.innerText += '\n'+testJSON
 
 //Q7
 let evt = {type:'click', id:16, pos:{lat:40.4321, lng:29.1648}} //Event
