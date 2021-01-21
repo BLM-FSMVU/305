@@ -22,7 +22,7 @@
 
 ### Exams
 
-* [2020 Final](../exam/Final 2020.html)
+* [Final](../exam/Final 2020.html)
 * [Quiz 2](../exam/Quiz solution.JPG)
 * [2019 Midterm](../exam/Midterm 2019.pdf)
 * [Quiz 1](../exam/quiz_solution.md)

@@ -20,36 +20,27 @@
 <body>
 <h2 id=title></h2>
 <i>Cevapları Console'da deneyin: <br>
-data hariç bütün değişkenler tanımlı</i>
+Bütün değişkenler tanımlandı</i>
 
-<div><h3>Q1</h3>
+<div><h3>Q1 Numeric objects</h3>
 <pre id=out1></pre>
-<i>"502" benim için sürpriz oldu<br>
-Diğer makul cevapları kabul ettim</i>
+<i>"502" benim için sürpriz oldu!<br>
+Diğer makul cevapları da kabul ettim</i>
 </div>
 
-<div><h3>Q2</h3>
-<pre id=out2>a) Search v within data:
-   for (let d of data) 
-     if (d == v) return d
-   return null
-
-b) Make an Object (instead of Map):
-   let m = {}
-   for (let d of data) 
-     m[d.valueOf()] = d 
-  // m[50] is the desired Point
-
-c) b is faster -- indexed search
+<div><h3>Q2 Array vs Map</h3>
+<pre id=out2></pre>
+<pre>
+c) Map is faster -- indexed search
 
 d) Simplify:
    data.map((a, i) => createHTML(a, i))
    data.map(createHTML) //no new function
 </pre>
-<i>Kullanılan data Array bu sayfada eksik</i>
+<i>Farkı hissetmek için milyonlarca nokta gerekir</i>
 </div>
 
-<div><h3>Q3</h3>
+<div><h3>Q3 Fat arrow</h3>
 <pre id=out3>
 a) mix = (a, b, t) => (1-t)*a + t*b
 
@@ -58,15 +49,20 @@ b) mix(a, b, 1/2) is the same as (a+b)/2
 c)
 </pre>
 <i>a, b iki sayı -- p1, p2 iki nokta<br>
-c şıkkında mix kullanmak gerekli</i>
+(c) şıkkında mix kullanmak gerekliydi</i>
 </div>
 
-<div><h3>Q4</h3>
-<pre id=out4></pre>
+<div><h3>Q4 URL parts</h3>
+<pre id=out4>a) Should work for any address:
+u='http://enesbek.github.io/305/sw.js'
+            user           repo  file
+
+b)
+</pre>
 <i>Başka çözümler de var ama bu çok zarif!</i>
 </div>
 
-<div><h3>Q5</h3>
+<div><h3>Q5 Array</h3>
 <pre>a = [11, 23, 5, 2, 7]
 a.size // undefined
 a.length // 5
@@ -77,25 +73,27 @@ a.sort((a,b) => a-b) // [2, 5, 7, 11, 23]
 <i>Bu soruyu hemen herkes doğru yapmış</i>
 </div>
 
-<div><h3>Q6</h3>
+<div><h3>Q6 await vs then</h3>
 <pre id=out6>async/await:
-  let r = await fetch(u); 
-  let s = await r.clone().text(); 
+  let r = await fetch(u)
+  let s = await r.clone().text()
   let b = await r.json()
 
-string: u, s (u could be URL)
-Promise: r.json(), r.text()
+a) Types:
+string: u, s
+Promise: fetch(u), r.json()
 Response: r, r.clone()
-b could be any type -- not asked
-</pre>
-<i>
-* Soruda a yazıyor ama diğer a ile karışmasın diye 
-bunu b yaptım <br> * Bir karakter farkı ile 
-<code>JSON.stringify(b,'',2)==s</code> sağlanmıyor
-</i>
+b could be of any type
+
+b) s is not equal to JSON.stringify(b)
+because s contains an extra char at the end:
+s.startsWith(JSON.stringify(b,'',2)) is true
+
+c) </pre>
+<i>Soruda a yazıyor, diğer a ile karışmasın diye bunu b yaptım</i>
 </div>
 
-<div><h3>Q7</h3>
+<div><h3>Q7 Diagrams</h3>
 <pre>a) 
 evt = {type:'click', id:16, pos:{lat:40.4321, lng:29.1648}} //Event
 prov = {id:16, name:'Bursa', loc:{lat:40.19, lng:29.08}} //Province
@@ -107,7 +105,7 @@ w = {id:746, name:"Gemlik", temp:-2, coord, main:"Clear"}  //Object
 <code>b) instead of evt.pos, use prov.loc</code>
 </div>
   
-<div id=out8><h3>Q8</h3>
+<div id=out8><h3>Q8 DOM</h3>
 <pre>  &lt;body>
     &lt;h2>Final exam&lt;/h2>
     &lt;hr>
@@ -132,12 +130,17 @@ function displayValue(s) {
 }
 class Point {
   constructor(x, y) {
-    this.x = Number(x); this.y = Number(y)
-    this.val = Math.sqrt(x*x + y*y)
-    this.str = '['+x+','+y+']'
+    this.x = Number(x)
+    this.y = Number(y)
   }
-  valueOf() { return this.val } 
-  toString() { return this.str }
+  valueOf() {
+    let xx = this.x*this.x
+    let yy = this.y*this.y
+    return Math.sqrt(xx + yy)
+  } 
+  toString() {
+    return '['+this.x+','+this.y+']'
+  }
   static fromString(s) {
     s = s.substring(1, s.length-1)
     let [x, y] = s.split(',')
@@ -154,14 +157,62 @@ console.log('p =', p)
 console.log('q =', q)
 
 //Q2
-
-//Q3
 let mix = (a, b, t) => (1-t)*a + t*b
+let data, m  //global
+function timing(f, v) {
+    let s = f.name || 'm.get'
+    let t = Date.now(); f(v)  //call f
+    t = (Date.now()-t)+' msec'
+    console.log('Q2', s+'('+v+'): '+t)
+}
+function makeData(n) { // takes time
+  const LO = 10, HI = 900
+  function randomInt() {
+    return Math.round(mix(LO, HI, Math.random()))
+  }
+  function addPoint(d) {
+    data.push(d); m.set(d.valueOf(), d)
+  }
+  data = []; m = new Map()
+  for (let i=1; i<n; i++) {
+    addPoint(new Point(randomInt(), randomInt()))
+  }
+  addPoint(p)  //last point
+}
+timing(makeData, 500*1000)
+// console.log(displayValue('data.length'))
+function search(v) {
+   for (let d of data) 
+     if (d == v) return d
+   return null
+// search(50) is the desired Point
+}
+function makeObject() {
+// not used -- similar to makeMap
+   m = {}
+   for (let d of data) 
+     m[d.valueOf()] = d 
+// m[50] is the desired Point
+}
+function makeMap() {
+   m = new Map()
+   for (let d of data) 
+     m.set(d.valueOf(), d)
+// m.get(50) is the desired Point
+}
+timing(search, 50); timing(v => m.get(v), 50)
+out2.innerText = 
+   'a) Search v within data:\n'+search+'\n\n'
+  +'b) Make a Map:\nlet m  //global\n'+makeMap
+
+//Q3 -- mix is defined in Q2
 function midPoint(p1, p2) { // Points
     let x = mix(p1.x, p2.x, 0.5)
     let y = mix(p1.y, p2.y, 0.5)
     return new Point(x, y)
 }
+let t = 'mix(100, 999, Math.random())'
+console.log('Q3', displayValue(t))
 out3.innerText += midPoint
 
 //Q4
@@ -173,7 +224,7 @@ function parseURL(u) {
 }
 let u = 'https://blm-fsmvu.github.io/305/work/Graphics.html'
 console.log('Q4', parseURL(u))
-out4.innerText = parseURL
+out4.innerText += parseURL
 
 
 //Q5
@@ -181,7 +232,7 @@ let a = [11, 23, 5, 2, 7]
 console.log('Q5 a =', a)
 
 //Q6
-let s, b
+let s, b  //global
 function testJSON(u) {
    fetch(u).then(r => {
       r.clone().text().then(t => s=t)
